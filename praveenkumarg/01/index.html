@@ -10,37 +10,121 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
 
   <style>
-    /* Adaptive image sizing — overrides placeholders */
-    .gallery-img-wrap img,
-    .craft-img-wrap img,
-    .insta-cell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    /* ══════════════════════════════════════════
+       GALLERY CARD FIX — image on top, text below
+       (matches the clean crafts-card style)
+    ══════════════════════════════════════════ */
+
+    /* Card shell */
+    .gallery-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
     }
 
-    /* Let each gallery card size to its image */
+    .gallery-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+    }
+
+    .gallery-card-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    /* Image section */
     .gallery-card .gallery-img-wrap {
+      position: relative;
       overflow: hidden;
       width: 100%;
+      flex-shrink: 0;
     }
 
     .gallery-card .gallery-img-wrap img {
       width: 100%;
       height: auto;
-      max-height: 520px;
+      max-height: 320px;
       object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
     }
 
+    .gallery-card:hover .gallery-img-wrap img {
+      transform: scale(1.04);
+    }
+
+    /* Hover overlay (zoom icon only — no text inside image) */
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.38);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      cursor: pointer;
+    }
+
+    .gallery-img-wrap:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .gallery-zoom {
+      font-size: 1.5rem;
+      color: #fff;
+      background: rgba(255,255,255,0.14);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    /* Text section — lives BELOW the image, never on top */
+    .gallery-meta {
+      padding: 0.95rem 1.1rem 1.15rem;
+      position: static !important;
+      background: transparent;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    .gallery-meta .gallery-title {
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.62);
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .gallery-meta .gallery-desc {
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.62);
+      margin: 0;
+      font-weight: 400;
+    }
+
+    /* Craft images */
     .craft-img-wrap img {
       width: 100%;
       height: auto;
-      max-height: 360px;
+      max-height: 260px;
       object-fit: cover;
       border-radius: inherit;
+      display: block;
     }
 
+    /* Instagram grid images */
     .insta-cell {
       position: relative;
       overflow: hidden;
@@ -51,6 +135,121 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    /* ══════════════════════════════════════════
+       LIGHTBOX — full-screen image popup
+    ══════════════════════════════════════════ */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(0, 0, 0, 0.93);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      animation: lbFadeIn 0.22s ease;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    @keyframes lbFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* Close button */
+    .lightbox-close {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.4rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 1.2rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 100000;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.22);
+    }
+
+    /* Image */
+    .lightbox-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 90vw;
+      max-height: 82vh;
+      animation: lbImgPop 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    @keyframes lbImgPop {
+      from { transform: scale(0.88); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    .lightbox-content img {
+      max-width: 90vw;
+      max-height: 82vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    }
+
+    /* Caption */
+    .lightbox-caption {
+      margin-top: 1.1rem;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.82rem;
+      text-align: center;
+      max-width: 560px;
+      line-height: 1.6;
+    }
+
+    /* Prev / Next arrows */
+    .lightbox-prev,
+    .lightbox-next {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 1.4rem;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 100000;
+    }
+
+    .lightbox-prev { left: 1.2rem; }
+    .lightbox-next { right: 1.2rem; }
+
+    .lightbox-prev:hover,
+    .lightbox-next:hover {
+      background: rgba(255,255,255,0.2);
     }
   </style>
 </head>
@@ -211,7 +410,6 @@
         <p class="section-desc reveal-up">
           A collection of pencil sketches inspired by peaceful landscapes, quiet emotions, beautiful memories, and the little details of nature. Each drawing reflects imagination, calmness, and the beauty found in simple moments ✨
         </p>
-
       </div>
 
       <!-- Filter buttons -->
@@ -233,9 +431,8 @@
               <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
             </div>
             <div class="gallery-meta">
-              <h3 class="gallery-title">Nature’s smallest patterns hold the greatest beauty.
-A simple leaf sketch that feels calm and elegant.</h3>
-              </div>
+              <h3 class="gallery-title">Nature's smallest patterns hold the greatest beauty. A simple leaf sketch that feels calm and elegant.</h3>
+            </div>
           </div>
         </div>
 
@@ -246,8 +443,7 @@ A simple leaf sketch that feels calm and elegant.</h3>
               <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
             </div>
             <div class="gallery-meta">
-              <h3 class="gallery-title">Mountains standing tall while the river flows peacefully below.
-This drawing feels like a quiet escape into nature.</h3>
+              <h3 class="gallery-title">Mountains standing tall while the river flows peacefully below. This drawing feels like a quiet escape into nature.</h3>
             </div>
           </div>
         </div>
@@ -259,9 +455,7 @@ This drawing feels like a quiet escape into nature.</h3>
               <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
             </div>
             <div class="gallery-meta">
-              <h3 class="gallery-title">Two trees watching over the silent waters together.
-Minimal art, yet filled with peaceful vibes.</h3>
-             
+              <h3 class="gallery-title">Two trees watching over the silent waters together. Minimal art, yet filled with peaceful vibes.</h3>
             </div>
           </div>
         </div>
@@ -273,9 +467,7 @@ Minimal art, yet filled with peaceful vibes.</h3>
               <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
             </div>
             <div class="gallery-meta">
-              <h3 class="gallery-title">A lonely house beside the lake under the moonlight.
-Soft scenery that feels dreamy and soothing.</h3>
-             
+              <h3 class="gallery-title">A lonely house beside the lake under the moonlight. Soft scenery that feels dreamy and soothing.</h3>
             </div>
           </div>
         </div>
@@ -287,9 +479,7 @@ Soft scenery that feels dreamy and soothing.</h3>
               <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
             </div>
             <div class="gallery-meta">
-              <h3 class="gallery-title">A village pathway crossing through fields and silence.
-Every line in this sketch carries a nostalgic touch.</h3>
-              
+              <h3 class="gallery-title">A village pathway crossing through fields and silence. Every line in this sketch carries a nostalgic touch.</h3>
             </div>
           </div>
         </div>
@@ -302,9 +492,7 @@ Every line in this sketch carries a nostalgic touch.</h3>
               <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
             </div>
             <div class="gallery-meta">
-              <h3 class="gallery-title">A peaceful waterfall flowing between the silent mountains.
-Nature speaks the loudest where the water falls softly</h3>
-          
+              <h3 class="gallery-title">A peaceful waterfall flowing between the silent mountains. Nature speaks the loudest where the water falls softly.</h3>
             </div>
           </div>
         </div>
@@ -317,9 +505,7 @@ Nature speaks the loudest where the water falls softly</h3>
               <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
             </div>
             <div class="gallery-meta">
-              <h3 class="gallery-title">A tiny puppy holding love in the cutest way possible.
-This sketch spreads warmth, innocence, and happiness.</h3>
-              
+              <h3 class="gallery-title">A tiny puppy holding love in the cutest way possible. This sketch spreads warmth, innocence, and happiness.</h3>
             </div>
           </div>
         </div>
@@ -331,9 +517,7 @@ This sketch spreads warmth, innocence, and happiness.</h3>
               <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
             </div>
             <div class="gallery-meta">
-              <h3 class="gallery-title">A graceful butterfly capturing the beauty of freedom and peace.
-Simple lines, yet full of elegance and life.</h3>
-              
+              <h3 class="gallery-title">A graceful butterfly capturing the beauty of freedom and peace. Simple lines, yet full of elegance and life.</h3>
             </div>
           </div>
         </div>
@@ -345,143 +529,119 @@ Simple lines, yet full of elegance and life.</h3>
               <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
             </div>
             <div class="gallery-meta">
-              <h3 class="gallery-title">A curious little rabbit reaching toward a fluttering butterfly.
-A soft and adorable moment frozen in art.</h3>
-              
+              <h3 class="gallery-title">A curious little rabbit reaching toward a fluttering butterfly. A soft and adorable moment frozen in art.</h3>
             </div>
           </div>
         </div>
 
         <!-- ── OTHERS (9 images) ── -->
-    
+        <div class="gallery-card" data-category="others">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pencil-arts/others/1.jpeg" alt="Other sketch 1" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A lonely figure beneath the umbrella, wrapped in silent thoughts. Sometimes the simplest sketches carry the deepest emotions.</p>
+            </div>
+          </div>
+        </div>
 
-<div class="gallery-card" data-category="others">
-  <div class="gallery-card-inner">
-    <div class="gallery-img-wrap">
-      <img src="images/pencil-arts/others/1.jpeg" alt="Other sketch 1" loading="lazy" />
-      <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
-    </div>
-    <div class="gallery-meta">
-          <p class="gallery-desc">
-        A lonely figure beneath the umbrella, wrapped in silent thoughts.<br>
-        Sometimes the simplest sketches carry the deepest emotions.
-      </p>
-    </div>
-  </div>
-</div>
+        <div class="gallery-card" data-category="others">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pencil-arts/others/2.jpeg" alt="Other sketch 2" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A graceful silhouette flowing with elegance and confidence. Minimal lines, yet beautifully expressive.</p>
+            </div>
+          </div>
+        </div>
 
-<div class="gallery-card" data-category="others">
-  <div class="gallery-card-inner">
-    <div class="gallery-img-wrap">
-      <img src="images/pencil-arts/others/2.jpeg" alt="Other sketch 2" loading="lazy" />
-      <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
-    </div>
-    <div class="gallery-meta">
-          <p class="gallery-desc">
-        A graceful silhouette flowing with elegance and confidence. Minimal lines, yet beautifully expressive.
-      </p>
-    </div>
-  </div>
-</div>
+        <div class="gallery-card" data-category="others">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pencil-arts/others/3.jpeg" alt="Other sketch 3" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">Two souls sharing a peaceful moment under the tree. A drawing filled with warmth, love, and calmness.</p>
+            </div>
+          </div>
+        </div>
 
-<div class="gallery-card" data-category="others">
-  <div class="gallery-card-inner">
-    <div class="gallery-img-wrap">
-      <img src="images/pencil-arts/others/3.jpeg" alt="Other sketch 3" loading="lazy" />
-      <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
-    </div>
-    <div class="gallery-meta">
-        <p class="gallery-desc">
-        Two souls sharing a peaceful moment under the tree. A drawing filled with warmth, love, and calmness.
-      </p>
-    </div>
-  </div>
-</div>
+        <div class="gallery-card" data-category="others">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pencil-arts/others/4.jpeg" alt="Other sketch 4" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A dreamy scene where nature meets imagination. Soft shadows and gentle details make it feel magical.</p>
+            </div>
+          </div>
+        </div>
 
-<div class="gallery-card" data-category="others">
-  <div class="gallery-card-inner">
-    <div class="gallery-img-wrap">
-      <img src="images/pencil-arts/others/4.jpeg" alt="Other sketch 4" loading="lazy" />
-      <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
-    </div>
-    <div class="gallery-meta">
-          <p class="gallery-desc">
-        A dreamy scene where nature meets imagination. Soft shadows and gentle details make it feel magical.
-      </p>
-    </div>
-  </div>
-</div>
+        <div class="gallery-card" data-category="others">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pencil-arts/others/5.jpeg" alt="Other sketch 5" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">Balance, peace, and simplicity captured in one frame. A quiet artwork inspired by calm natural beauty.</p>
+            </div>
+          </div>
+        </div>
 
-<div class="gallery-card" data-category="others">
-  <div class="gallery-card-inner">
-    <div class="gallery-img-wrap">
-      <img src="images/pencil-arts/others/5.jpeg" alt="Other sketch 5" loading="lazy" />
-      <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
-    </div>
-    <div class="gallery-meta">
-            <p class="gallery-desc">
-        Balance, peace, and simplicity captured in one frame. A quiet artwork inspired by calm natural beauty.
-      </p>
-    </div>
-  </div>
-</div>
+        <div class="gallery-card" data-category="others">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pencil-arts/others/6.jpeg" alt="Other sketch 6" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A mysterious girl hidden beneath her elegant hat. Simple graphite strokes creating a stylish charm.</p>
+            </div>
+          </div>
+        </div>
 
-<div class="gallery-card" data-category="others">
-  <div class="gallery-card-inner">
-    <div class="gallery-img-wrap">
-      <img src="images/pencil-arts/others/6.jpeg" alt="Other sketch 6" loading="lazy" />
-      <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
-    </div>
-    <div class="gallery-meta">
-           <p class="gallery-desc">
-        A mysterious girl hidden beneath her elegant hat. Simple graphite strokes creating a stylish charm.
-      </p>
-    </div>
-  </div>
-</div>
+        <div class="gallery-card" data-category="others">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pencil-arts/others/7.jpeg" alt="Other sketch 7" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A peaceful swing beneath the tree, touched by silence. Feels like a memory from a beautiful evening.</p>
+            </div>
+          </div>
+        </div>
 
-<div class="gallery-card" data-category="others">
-  <div class="gallery-card-inner">
-    <div class="gallery-img-wrap">
-      <img src="images/pencil-arts/others/7.jpeg" alt="Other sketch 7" loading="lazy" />
-      <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
-    </div>
-    <div class="gallery-meta">
-            <p class="gallery-desc">
-        A peaceful swing beneath the tree, touched by silence. Feels like a memory from a beautiful evening.
-      </p>
-    </div>
-  </div>
-</div>
+        <div class="gallery-card" data-category="others">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pencil-arts/others/8.jpeg" alt="Other sketch 8" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A lovely portrait capturing comfort, care, and togetherness. Art that softly speaks the language of love.</p>
+            </div>
+          </div>
+        </div>
 
-<div class="gallery-card" data-category="others">
-  <div class="gallery-card-inner">
-    <div class="gallery-img-wrap">
-      <img src="images/pencil-arts/others/8.jpeg" alt="Other sketch 8" loading="lazy" />
-      <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
-    </div>
-    <div class="gallery-meta">
-            <p class="gallery-desc">
-        A lovely portrait capturing comfort, care, and togetherness. Art that softly speaks the language of love.
-      </p>
-    </div>
-  </div>
-</div>
-
-<div class="gallery-card" data-category="others">
-  <div class="gallery-card-inner">
-    <div class="gallery-img-wrap">
-      <img src="images/pencil-arts/others/9.jpeg" alt="Other sketch 9" loading="lazy" />
-      <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
-    </div>
-    <div class="gallery-meta">
-          <p class="gallery-desc">
-        A shy smile hidden behind flowing hair and flowers. Elegant, delicate, and beautifully artistic.
-      </p>
-    </div>
-  </div>
-</div>
-
+        <div class="gallery-card" data-category="others">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pencil-arts/others/9.jpeg" alt="Other sketch 9" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A shy smile hidden behind flowing hair and flowers. Elegant, delicate, and beautifully artistic.</p>
+            </div>
+          </div>
+        </div>
 
       </div><!-- /gallery-grid -->
 
@@ -491,219 +651,138 @@ A soft and adorable moment frozen in art.</h3>
     </div>
   </section>
 
-<!-- CRAFTS GALLERY -->
-<section class="crafts-section section" id="crafts">
-  <div class="container">
-    <div class="section-header reveal-up">
-      <span class="section-tag">03 — Crafts</span>
-      <h2 class="section-title">Handmade<br/><em>with intention</em></h2>
-       <p class="section-desc reveal-up"> Handmade crafts created with creativity, patience, and imagination. From paper flowers to decorative art pieces, each creation reflects joy, colors, and the beauty of turning simple materials into something meaningful ✨ </p>
+  <!-- CRAFTS GALLERY -->
+  <section class="crafts-section section" id="crafts">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-tag">03 — Crafts</span>
+        <h2 class="section-title">Handmade<br/><em>with intention</em></h2>
+        <p class="section-desc reveal-up">Handmade crafts created with creativity, patience, and imagination. From paper flowers to decorative art pieces, each creation reflects joy, colors, and the beauty of turning simple materials into something meaningful ✨</p>
+      </div>
+
+      <div class="crafts-grid">
+
+        <div class="craft-card reveal-up" style="--delay:0.1s">
+          <div class="craft-img-wrap">
+            <img src="images/handcrafts/1.jpeg" alt="Handcraft 1" loading="lazy" />
+          </div>
+          <div class="craft-info">
+            <h3>Stars of Creativity</h3>
+            <p>Colorful handmade stars shining with artistic charm.<br>A simple craft filled with creativity and joy.</p>
+          </div>
+        </div>
+
+        <div class="craft-card craft-card--featured reveal-up" style="--delay:0.2s">
+          <div class="craft-img-wrap">
+            <img src="images/handcrafts/2.jpeg" alt="Handcraft 2" loading="lazy" />
+          </div>
+          <div class="craft-info">
+            <h3>Golden Blossom</h3>
+            <p>A beautiful flower crafted with elegant golden folds.<br>Delicate handmade art inspired by nature's beauty.</p>
+          </div>
+        </div>
+
+        <div class="craft-card reveal-up" style="--delay:0.3s">
+          <div class="craft-img-wrap">
+            <img src="images/handcrafts/3.jpeg" alt="Handcraft 3" loading="lazy" />
+          </div>
+          <div class="craft-info">
+            <h3>Paper Bloom</h3>
+            <p>A soft circular paper craft blooming with simplicity.<br>Minimal design creating a calm artistic vibe.</p>
+          </div>
+        </div>
+
+        <div class="craft-card reveal-up" style="--delay:0.4s">
+          <div class="craft-img-wrap">
+            <img src="images/handcrafts/4.jpeg" alt="Handcraft 4" loading="lazy" />
+          </div>
+          <div class="craft-info">
+            <h3>Hanging Star</h3>
+            <p>A golden handmade star floating beautifully in space.<br>Simple craftwork glowing with elegance and creativity.</p>
+          </div>
+        </div>
+
+        <div class="craft-card reveal-up" style="--delay:0.5s">
+          <div class="craft-img-wrap">
+            <img src="images/handcrafts/5.jpeg" alt="Handcraft 5" loading="lazy" />
+          </div>
+          <div class="craft-info">
+            <h3>Crimson Shine</h3>
+            <p>A bright red star crafted with bold artistic folds.<br>Eye-catching handmade decor full of energy and style.</p>
+          </div>
+        </div>
+
+        <div class="craft-card reveal-up" style="--delay:0.6s">
+          <div class="craft-img-wrap">
+            <img src="images/handcrafts/6.jpeg" alt="Handcraft 6" loading="lazy" />
+          </div>
+          <div class="craft-info">
+            <h3>Dreamcatcher Art</h3>
+            <p>A colorful hanging craft filled with playful patterns.<br>Handmade beauty blending tradition and creativity together.</p>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </section>
 
-    <div class="crafts-grid">
+  <!-- PIXEL ARTS GALLERY -->
+  <section class="gallery-section section" id="pixel-arts">
+    <div class="container">
 
-      <div class="craft-card reveal-up" style="--delay:0.1s">
-        <div class="craft-img-wrap">
-          <img src="images/handcrafts/1.jpeg" alt="Handcraft 1" loading="lazy" />
-        </div>
-        <div class="craft-info">
-          <h3>Stars of Creativity</h3>
-          <p>
-            Colorful handmade stars shining with artistic charm.<br>
-            A simple craft filled with creativity and joy.
-          </p>
-        </div>
+      <div class="section-header reveal-up">
+        <span class="section-tag">04 — Pixel Arts</span>
+        <h2 class="section-title">Pixel<br/><em>Digital creations</em></h2>
+        <p class="section-desc reveal-up">
+          A collection of colorful pixel artworks created one block at a time. Inspired by games, cartoons, creativity, and digital imagination, these tiny pixels come together to create nostalgic and playful art ✨
+        </p>
       </div>
 
-      <div class="craft-card craft-card--featured reveal-up" style="--delay:0.2s">
-        <div class="craft-img-wrap">
-          <img src="images/handcrafts/2.jpeg" alt="Handcraft 2" loading="lazy" />
-        </div>
-        <div class="craft-info">
-          <h3>Golden Blossom</h3>
-          <p>
-            A beautiful flower crafted with elegant golden folds.<br>
-            Delicate handmade art inspired by nature’s beauty.
-          </p>
-        </div>
-      </div>
+      <div class="gallery-grid" id="pixelGrid">
 
-      <div class="craft-card reveal-up" style="--delay:0.3s">
-        <div class="craft-img-wrap">
-          <img src="images/handcrafts/3.jpeg" alt="Handcraft 3" loading="lazy" />
-        </div>
-        <div class="craft-info">
-          <h3>Paper Bloom</h3>
-          <p>
-            A soft circular paper craft blooming with simplicity.<br>
-            Minimal design creating a calm artistic vibe.
-          </p>
-        </div>
-      </div>
-
-      <div class="craft-card reveal-up" style="--delay:0.4s">
-        <div class="craft-img-wrap">
-          <img src="images/handcrafts/4.jpeg" alt="Handcraft 4" loading="lazy" />
-        </div>
-        <div class="craft-info">
-          <h3>Hanging Star</h3>
-          <p>
-            A golden handmade star floating beautifully in space.<br>
-            Simple craftwork glowing with elegance and creativity.
-          </p>
-        </div>
-      </div>
-
-      <div class="craft-card reveal-up" style="--delay:0.5s">
-        <div class="craft-img-wrap">
-          <img src="images/handcrafts/5.jpeg" alt="Handcraft 5" loading="lazy" />
-        </div>
-        <div class="craft-info">
-          <h3>Crimson Shine</h3>
-          <p>
-            A bright red star crafted with bold artistic folds.<br>
-            Eye-catching handmade decor full of energy and style.
-          </p>
-        </div>
-      </div>
-
-      <div class="craft-card reveal-up" style="--delay:0.6s">
-        <div class="craft-img-wrap">
-          <img src="images/handcrafts/6.jpeg" alt="Handcraft 6" loading="lazy" />
-        </div>
-        <div class="craft-info">
-          <h3>Dreamcatcher Art</h3>
-          <p>
-            A colorful hanging craft filled with playful patterns.<br>
-            Handmade beauty blending tradition and creativity together.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- PIXEL ARTS GALLERY -->
-<section class="gallery-section section" id="pixel-arts">
-  <div class="container">
-
-    <div class="section-header reveal-up">
-      <span class="section-tag">04 — Pixel Arts</span>
-      <h2 class="section-title">
-        Pixel<br/>
-        <em>Digital creations</em>
-      </h2>
-
-<p class="section-desc reveal-up">
-  A collection of colorful pixel artworks created one block at a time.  
-  Inspired by games, cartoons, creativity, and digital imagination,  
-  these tiny pixels come together to create nostalgic and playful art ✨
-</p>
-
-    </div>
-
-    <div class="gallery-grid" id="pixelGrid">
-
-      <!-- PIXEL 1 -->
-      <div class="gallery-card" data-category="pixel">
-
-        <div class="gallery-card-inner">
-
-          <div class="gallery-img-wrap">
-            <img
-              src="images/pixel-arts/1.jpeg"
-              alt="Pixel art 1"
-              loading="lazy"
-              style="image-rendering:pixelated"
-            />
-
-            <div class="gallery-overlay">
-              <span class="gallery-zoom">↗</span>
+        <!-- PIXEL 1 -->
+        <div class="gallery-card" data-category="pixel">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pixel-arts/1.jpeg" alt="Pixel art 1" loading="lazy" style="image-rendering:pixelated" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A bold pixel creation inspired by iconic superhero energy. Tiny squares combining together into powerful digital art.</p>
             </div>
           </div>
-
-          <div class="gallery-meta">
-
-            <p class="gallery-desc">
-              A bold pixel creation inspired by iconic superhero energy.<br>
-              Tiny squares combining together into powerful digital art.
-            </p>
-
-          </div>
-
         </div>
 
-      </div>
-
-      <!-- PIXEL 2 -->
-      <div class="gallery-card" data-category="pixel">
-
-        <div class="gallery-card-inner">
-
-          <div class="gallery-img-wrap">
-            <img
-              src="images/pixel-arts/2.jpeg"
-              alt="Pixel art 2"
-              loading="lazy"
-              style="image-rendering:pixelated"
-            />
-
-            <div class="gallery-overlay">
-              <span class="gallery-zoom">↗</span>
+        <!-- PIXEL 2 -->
+        <div class="gallery-card" data-category="pixel">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pixel-arts/2.jpeg" alt="Pixel art 2" loading="lazy" style="image-rendering:pixelated" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A colorful butterfly brought to life through pixel patterns. Simple digital blocks creating graceful beauty.</p>
             </div>
           </div>
-
-          <div class="gallery-meta">
-            <p class="gallery-desc">
-              A colorful butterfly brought to life through pixel patterns.<br>
-              Simple digital blocks creating graceful beauty.
-            </p>
-
-          </div>
-
         </div>
 
-      </div>
-
-      <!-- PIXEL 3 -->
-      <div class="gallery-card" data-category="pixel">
-
-        <div class="gallery-card-inner">
-
-          <div class="gallery-img-wrap">
-            <img
-              src="images/pixel-arts/3.jpeg"
-              alt="Pixel art 3"
-              loading="lazy"
-              style="image-rendering:pixelated"
-            />
-
-            <div class="gallery-overlay">
-              <span class="gallery-zoom">↗</span>
+        <!-- PIXEL 3 -->
+        <div class="gallery-card" data-category="pixel">
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="images/pixel-arts/3.jpeg" alt="Pixel art 3" loading="lazy" style="image-rendering:pixelated" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <p class="gallery-desc">A cheerful pixel version of the beloved cartoon character. Cute digital art filled with nostalgia and fun.</p>
             </div>
           </div>
-
-          <div class="gallery-meta">
-
-            <p class="gallery-desc">
-              A cheerful pixel version of the beloved cartoon character.<br>
-              Cute digital art filled with nostalgia and fun.
-            </p>
-
-          </div>
-
         </div>
 
       </div>
 
     </div>
-
-  </div>
-</section>
-
-
+  </section>
 
   <!-- INSTAGRAM WORKS -->
   <section class="instagram-section section" id="instagram">
@@ -890,13 +969,126 @@ A soft and adorable moment frozen in art.</h3>
     </div>
   </footer>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lightboxClose">✕</button>
+  <!-- ══════════════════════════════════════════
+       LIGHTBOX
+  ══════════════════════════════════════════ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous">‹</button>
     <div class="lightbox-content" id="lightboxContent"></div>
     <div class="lightbox-caption" id="lightboxCaption"></div>
+    <button class="lightbox-next" id="lightboxNext" aria-label="Next">›</button>
   </div>
 
   <script src="script.js"></script>
+
+  <script>
+    /* ══════════════════════════════════════════
+       GALLERY FILTER (keep existing behaviour)
+    ══════════════════════════════════════════ */
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const galleryCards = document.querySelectorAll('#drawingsGrid .gallery-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        galleryCards.forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    /* ══════════════════════════════════════════
+       LIGHTBOX
+    ══════════════════════════════════════════ */
+    const lightbox      = document.getElementById('lightbox');
+    const lbContent     = document.getElementById('lightboxContent');
+    const lbCaption     = document.getElementById('lightboxCaption');
+    const lbClose       = document.getElementById('lightboxClose');
+    const lbPrev        = document.getElementById('lightboxPrev');
+    const lbNext        = document.getElementById('lightboxNext');
+
+    // Collect ALL gallery images (drawings + pixel arts)
+    let lbImages = [];   // [{src, alt, caption}]
+    let lbIndex  = 0;
+
+    function buildLightboxImages() {
+      lbImages = [];
+      document.querySelectorAll('.gallery-card .gallery-img-wrap img').forEach(img => {
+        const card    = img.closest('.gallery-card');
+        const metaEl  = card.querySelector('.gallery-title, .gallery-desc');
+        lbImages.push({
+          src:     img.src,
+          alt:     img.alt,
+          caption: metaEl ? metaEl.innerText.trim() : ''
+        });
+      });
+    }
+
+    function openLightbox(index) {
+      buildLightboxImages();
+      lbIndex = index;
+      renderLightbox();
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+      lbContent.innerHTML = '';
+      lbCaption.textContent = '';
+    }
+
+    function renderLightbox() {
+      const item = lbImages[lbIndex];
+      lbContent.innerHTML = `<img src="${item.src}" alt="${item.alt}" />`;
+      lbCaption.textContent = item.caption;
+      lbPrev.style.visibility = lbIndex > 0 ? 'visible' : 'hidden';
+      lbNext.style.visibility = lbIndex < lbImages.length - 1 ? 'visible' : 'hidden';
+    }
+
+    // Attach click to every gallery image wrap
+    document.addEventListener('click', e => {
+      const wrap = e.target.closest('.gallery-card .gallery-img-wrap');
+      if (!wrap) return;
+      buildLightboxImages();
+      const img   = wrap.querySelector('img');
+      const idx   = lbImages.findIndex(i => i.src === img.src);
+      openLightbox(idx >= 0 ? idx : 0);
+    });
+
+    lbClose.addEventListener('click', closeLightbox);
+
+    // Close on backdrop click
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    lbPrev.addEventListener('click', e => {
+      e.stopPropagation();
+      if (lbIndex > 0) { lbIndex--; renderLightbox(); }
+    });
+
+    lbNext.addEventListener('click', e => {
+      e.stopPropagation();
+      if (lbIndex < lbImages.length - 1) { lbIndex++; renderLightbox(); }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape')      closeLightbox();
+      if (e.key === 'ArrowLeft'  && lbIndex > 0)                    { lbIndex--; renderLightbox(); }
+      if (e.key === 'ArrowRight' && lbIndex < lbImages.length - 1)  { lbIndex++; renderLightbox(); }
+    });
+  </script>
+
 </body>
 </html>
