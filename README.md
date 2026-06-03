@@ -1,25 +1,92 @@
-# Magical River Portfolio
+# 🌙 Mystic Gallery & Diary
 
-This repository contains the static portfolio site under `praveenkumarg/01/`.
+Welcome to my personal creative space ✨
+This website is a combination of my imagination, memories, emotions, and artworks.
+Built completely using frontend technologies and hosted with GitHub Pages.
 
-## Preview locally
-Open `praveenkumarg/01/index.html` in your browser to view the portfolio.
+---
 
-## Push to GitHub
-1. Create a new repository on GitHub.
-2. Add the new GitHub remote to this local repo:
-   ```bash
-git remote remove origin
-git remote add origin https://github.com/<your-username>/<new-repo-name>.git
-```
-3. Commit and push:
-   ```bash
-git add .
-git commit -m "Add portfolio site"
-git push origin main
-```
+## 🌧️ Features
 
-## GitHub Pages
-If you want a live site, use GitHub Pages and point the Pages source to this repository.
+### 📅 Aesthetic Diary Calendar
 
-> Note: This repo now contains only the static portfolio files. The `app.py` Streamlit wrapper has been removed.
+* Monthly / Weekly / Yearly calendar views
+* Write daily diary entries
+* Upload multiple photos for each day
+* Random inspirational quotes
+* Responsive mobile-friendly design
+* Entries available only for today & past dates
+* Beautiful nature-inspired UI with glassmorphism effects
+
+---
+
+### 🎨 Personal Portfolio
+
+A dedicated creative portfolio showcasing:
+
+* ✏️ Pencil Sketches
+* 🧵 Handmade Crafts
+* 🟪 Pixel Arts
+* 🌿 Nature Inspired Designs
+
+Each section represents a part of my creativity and interests.
+
+---
+
+## 💻 Technologies Used
+
+* HTML
+* CSS
+* JavaScript
+* LocalStorage API
+* GitHub Pages
+
+---
+
+## ✨ UI Inspiration
+
+The website is inspired by:
+
+* rainy nights 🌧️
+* waterfalls 🌊
+* moonlight aesthetics 🌙
+* peaceful memories ✨
+
+---
+
+## 🚀 Live Website
+
+Hosted using GitHub Pages.
+
+---
+
+## 📸 Screens Included
+
+* Calendar UI
+* Diary Writing View
+* Pencil Arts Showcase
+* Pixel Arts Gallery
+* Handmade Crafts Section
+
+---
+
+## 🌌 Future Improvements
+
+* Firebase cloud storage
+* User authentication
+* Mood tracking
+* Music integration
+* Memory timeline
+* Dark/Light themes
+* Search functionality
+
+---
+
+## 🤍 About This Project
+
+This project is not just a website.
+It is a small digital world where I preserve memories, creativity, emotions, and artworks in one peaceful space.
+
+---
+
+Made with creativity & midnight thoughts ✨
