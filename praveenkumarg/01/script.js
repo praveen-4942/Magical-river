@@ -139,9 +139,9 @@ const lightboxContent = document.getElementById('lightboxContent');
 const lightboxCaption = document.getElementById('lightboxCaption');
 const lightboxClose   = document.getElementById('lightboxClose');
 
-function openLightbox(svgClone, caption) {
+function openLightbox(contentNode, caption) {
   lightboxContent.innerHTML = '';
-  lightboxContent.appendChild(svgClone);
+  lightboxContent.appendChild(contentNode);
   lightboxCaption.textContent = caption;
   lightbox.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -152,19 +152,22 @@ function closeLightbox() {
   document.body.style.overflow = '';
 }
 
-galleryCards.forEach(card => {
-  card.addEventListener('click', () => {
-    const placeholder = card.querySelector('.gallery-placeholder');
-    const svg = placeholder ? placeholder.querySelector('svg') : null;
-    const title = card.querySelector('.gallery-title')?.textContent || '';
-    const cat   = card.querySelector('.gallery-cat')?.textContent || '';
-    if (svg) {
-      const clone = svg.cloneNode(true);
-      clone.style.width  = '100%';
-      clone.style.height = '100%';
-      clone.style.display = 'block';
-      openLightbox(clone, `${title} — ${cat}`);
-    }
+const galleryImageWrappers = document.querySelectorAll('.gallery-img-wrap');
+
+galleryImageWrappers.forEach(wrap => {
+  wrap.addEventListener('click', () => {
+    const img = wrap.querySelector('img');
+    if (!img) return;
+
+    const title = wrap.closest('.gallery-card')?.querySelector('.gallery-title')?.textContent || img.alt || 'Artwork';
+    const clone = img.cloneNode(true);
+    clone.style.maxWidth  = '90vw';
+    clone.style.maxHeight = '80vh';
+    clone.style.width     = 'auto';
+    clone.style.height    = 'auto';
+    clone.style.display   = 'block';
+
+    openLightbox(clone, title);
   });
 });
 
