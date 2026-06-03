@@ -358,3 +358,4 @@ const statObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.5 });
 
 statNums.forEach(el => statObserver.observe(el));
+
