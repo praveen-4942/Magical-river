@@ -259,6 +259,116 @@
     .lightbox-next:hover {
       background: rgba(255,255,255,0.2);
     }
+
+    /* Mobile fix: make Pencil Arts and Pixel Arts match the Crafts cards */
+    #drawings .gallery-grid,
+    #pixel-arts .gallery-grid {
+      align-items: start;
+    }
+
+    #drawings .gallery-card,
+    #pixel-arts .gallery-card {
+      min-width: 0;
+    }
+
+    @media (max-width: 768px) {
+      #drawings .gallery-grid,
+      #pixel-arts .gallery-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-auto-flow: row !important;
+        grid-auto-rows: auto !important;
+        align-items: start !important;
+        gap: 1.55rem 1.25rem !important;
+      }
+
+      #drawings .gallery-card,
+      #pixel-arts .gallery-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        grid-column: auto !important;
+        grid-row: auto !important;
+        margin: 0 !important;
+        transform: none !important;
+        break-inside: avoid;
+        border-radius: 18px !important;
+        overflow: hidden !important;
+      }
+
+      #drawings .gallery-card-inner,
+      #pixel-arts .gallery-card-inner {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+      }
+
+      #drawings .gallery-img-wrap,
+      #pixel-arts .gallery-img-wrap {
+        position: relative !important;
+        width: 100% !important;
+        height: clamp(128px, 44vw, 190px) !important;
+        min-height: clamp(128px, 44vw, 190px) !important;
+        aspect-ratio: 1 / 1 !important;
+        overflow: hidden !important;
+        flex: 0 0 auto !important;
+      }
+
+      #drawings .gallery-img-wrap img,
+      #pixel-arts .gallery-img-wrap img {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: none !important;
+        object-fit: cover !important;
+        display: block !important;
+      }
+
+      #drawings .gallery-meta,
+      #pixel-arts .gallery-meta {
+        position: static !important;
+        flex: 1 1 auto !important;
+        padding: 0.95rem 1rem 1.1rem !important;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+
+      #drawings .gallery-title,
+      #drawings .gallery-desc,
+      #pixel-arts .gallery-title,
+      #pixel-arts .gallery-desc {
+        font-size: 0.95rem !important;
+        line-height: 1.55 !important;
+        overflow-wrap: anywhere;
+      }
+    }
+
+    @media (max-width: 380px) {
+      #drawings .gallery-grid,
+      #pixel-arts .gallery-grid {
+        gap: 1.25rem 0.9rem !important;
+      }
+
+      #drawings .gallery-img-wrap,
+      #pixel-arts .gallery-img-wrap {
+        height: clamp(118px, 43vw, 160px) !important;
+        min-height: clamp(118px, 43vw, 160px) !important;
+      }
+
+      #drawings .gallery-meta,
+      #pixel-arts .gallery-meta {
+        padding: 0.8rem 0.85rem 0.95rem !important;
+      }
+
+      #drawings .gallery-title,
+      #drawings .gallery-desc,
+      #pixel-arts .gallery-title,
+      #pixel-arts .gallery-desc {
+        font-size: 0.88rem !important;
+      }
+    }
   </style>
 </head>
 <body>
