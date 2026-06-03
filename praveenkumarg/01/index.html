@@ -986,6 +986,63 @@
     /* ══════════════════════════════════════════
        GALLERY FILTER (keep existing behaviour)
     ══════════════════════════════════════════ */
+    function toTitleCase(value) {
+      return String(value)
+        .replace(/[-_]+/g, ' ')
+        .replace(/\b\w/g, char => char.toUpperCase())
+        .trim();
+    }
+
+    function normalizeCategory(value) {
+      return String(value || 'others').trim().toLowerCase();
+    }
+
+    function renderGallery(images) {
+      if (!Array.isArray(images) || images.length === 0) return;
+
+      const grid = document.getElementById('drawingsGrid');
+      if (!grid) return;
+
+      const categories = new Set(['all']);
+      grid.innerHTML = '';
+
+      images.forEach(image => {
+        const category = normalizeCategory(image.category);
+        categories.add(category);
+        const title = image.title || toTitleCase(image.alt || image.src.split('/').pop().replace(/\.[^.]+$/, ''));
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.dataset.category = category;
+        card.innerHTML = `
+          <div class="gallery-card-inner">
+            <div class="gallery-img-wrap">
+              <img src="${image.src}" alt="${image.alt || title}" loading="lazy" />
+              <div class="gallery-overlay"><span class="gallery-zoom">↗</span></div>
+            </div>
+            <div class="gallery-meta">
+              <h3 class="gallery-title">${title}</h3>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      const filterRow = document.querySelector('.gallery-filters');
+      if (filterRow) {
+        filterRow.innerHTML = Array.from(categories)
+          .map(category => {
+            const label = category === 'all' ? 'All' : toTitleCase(category);
+            const active = category === 'all' ? ' active' : '';
+            return `<button class="filter-btn${active}" data-filter="${category}">${label}</button>`;
+          })
+          .join('');
+      }
+    }
+
+    if (window.galleryImages && window.galleryImages.length) {
+      renderGallery(window.galleryImages);
+    }
+
     const filterBtns = document.querySelectorAll('.filter-btn');
     const galleryCards = document.querySelectorAll('#drawingsGrid .gallery-card');
 
