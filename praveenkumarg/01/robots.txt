@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://praveen-4942.github.io/Magical-river/sitemap.xml
