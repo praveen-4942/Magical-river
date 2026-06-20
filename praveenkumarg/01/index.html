@@ -1136,30 +1136,30 @@ content="Pencil drawings, handmade crafts and digital artworks.">
           </div>
         </div>
         <div class="contact-form-wrap reveal-right">
-          <form class="contact-form" id="contactForm">
+          <form class="contact-form" id="contactForm"
+                action="https://formsubmit.co/ajax/amazinggreenland84@gmail.com"
+                method="POST">
             <div class="form-row">
               <div class="form-group">
                 <label for="fname">Name</label>
-                <input type="text" id="fname" placeholder="Your name" required />
+                <input type="text" id="fname" name="name" placeholder="Your name" required />
               </div>
               <div class="form-group">
                 <label for="femail">Email</label>
-                <input type="email" id="femail" placeholder="your@email.com" required />
+                <input type="email" id="femail" name="email" placeholder="your@email.com" required />
               </div>
             </div>
             <div class="form-group">
               <label for="fsubject">Subject</label>
-              <select id="fsubject">
+              <select id="fsubject" name="subject">
                 <option value="">Select a topic…</option>
-                <option value="commission">Commission a Piece</option>
                 <option value="collab">Collaboration</option>
-                <option value="store">Store Enquiry</option>
                 <option value="other">Other</option>
               </select>
             </div>
             <div class="form-group">
               <label for="fmessage">Message</label>
-              <textarea id="fmessage" rows="5" placeholder="Tell me about your project…" required></textarea>
+              <textarea id="fmessage" name="message" rows="5" placeholder="Tell me about your project…" required></textarea>
             </div>
             <button type="submit" class="btn btn-primary btn-full">Send Message</button>
             <div class="form-success" id="formSuccess">Thank you ✦ I'll be in touch soon.</div>
