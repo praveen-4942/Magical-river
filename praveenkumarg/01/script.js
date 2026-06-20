@@ -182,24 +182,36 @@ document.addEventListener('keydown', e => {
 });
 
 /* ─── CONTACT FORM ────────────────────────── */
-const contactForm   = document.getElementById('contactForm');
-const formSuccess   = document.getElementById('formSuccess');
+const contactForm = document.getElementById('contactForm');
+const formSuccess  = document.getElementById('formSuccess');
 
 if (contactForm) {
-  contactForm.addEventListener('submit', e => {
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const btn = contactForm.querySelector('button[type="submit"]');
-    btn.textContent = 'Sending…';
-    btn.disabled = true;
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
 
-    // Simulate async send
-    setTimeout(() => {
-      contactForm.reset();
-      btn.textContent = 'Send Message';
-      btn.disabled = false;
-      formSuccess.classList.add('show');
-      setTimeout(() => formSuccess.classList.remove('show'), 5000);
-    }, 1400);
+    try {
+      const formData = new FormData(contactForm);
+      const res = await fetch(contactForm.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      });
+
+      if (res.ok) {
+        formSuccess.style.display = 'block';
+        contactForm.reset();
+      } else {
+        alert('Something went wrong. Please try emailing directly instead.');
+      }
+    } catch (err) {
+      alert('Network error — please try again or email directly.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    }
   });
 }
 
