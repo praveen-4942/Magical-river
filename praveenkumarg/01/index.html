@@ -404,12 +404,13 @@ content="Pencil drawings, handmade crafts and digital artworks.">
     /* ══════════════════════════════════════════
        GAMES & PUZZLES — playable card grid
     ══════════════════════════════════════════ */
-    .play-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
-      gap: 1.75rem;
-      justify-content: center;
-    }
+   .play-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+  gap: 1.75rem;
+  justify-content: center;
+  width: 100%;   /* 👈 add this */
+}
 
     .play-card {
       display: block;
