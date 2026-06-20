@@ -1,22 +1,8 @@
-# 🌙 Mystic Gallery & Diary
+# 🌙 Welcome to Praveenkumar G's World of Arts
 
 Welcome to my personal creative space ✨
-This website is a combination of my imagination, memories, emotions, and artworks.
+This website is a combination of my imagination, memories, emotions, artworks, games and puzzles.
 Built completely using frontend technologies and hosted with GitHub Pages.
-
----
-
-## 🌧️ Features
-
-### 📅 Aesthetic Diary Calendar
-
-* Monthly / Weekly / Yearly calendar views
-* Write daily diary entries
-* Upload multiple photos for each day
-* Random inspirational quotes
-* Responsive mobile-friendly design
-* Entries available only for today & past dates
-* Beautiful nature-inspired UI with glassmorphism effects
 
 ---
 
@@ -28,6 +14,7 @@ A dedicated creative portfolio showcasing:
 * 🧵 Handmade Crafts
 * 🟪 Pixel Arts
 * 🌿 Nature Inspired Designs
+* Games and Puzzles
 
 Each section represents a part of my creativity and interests.
 
@@ -62,11 +49,10 @@ Hosted using GitHub Pages.
 
 ## 📸 Screens Included
 
-* Calendar UI
-* Diary Writing View
 * Pencil Arts Showcase
 * Pixel Arts Gallery
 * Handmade Crafts Section
+* Puzzles and games
 
 ---
 
